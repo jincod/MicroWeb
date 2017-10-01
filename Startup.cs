@@ -12,15 +12,16 @@ namespace Micro
         public static void Run<TStartup>(string[] args) where TStartup : class 
             => WebHost.CreateDefaultBuilder(args)
                 .UseStartup<TStartup>()
-                .Build().Run();
+                .Build()
+                .Run();
 
         IServiceProvider IStartup.ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
             return services.BuildServiceProvider();
         }
 
-        void IStartup.Configure(IApplicationBuilder app)
-            => app.UseMvc();
+        void IStartup.Configure(IApplicationBuilder app) => app.UseMvc();
     }
 }
