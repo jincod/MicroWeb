@@ -1,0 +1,10 @@
+{
+  "name": "MicroWeb",
+  "description": "Microservice on ASP.NET Core",
+  "repository": "https://github.com/jincod/MicroWeb",
+  "keywords": ["aspnet", "core"],
+  "stack": "heroku-16",
+  "buildpacks": [{
+    "url": "https://github.com/jincod/dotnetcore-buildpack"
+  }]
+}
