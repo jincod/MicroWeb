@@ -7,21 +7,28 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Micro
 {
-    public class Microservice : Controller, IStartup
-    {
-        public static void Run<TStartup>(string[] args) where TStartup : class 
-            => WebHost.CreateDefaultBuilder(args)
-                .UseStartup<TStartup>()
-                .Build()
-                .Run();
+	public class Microservice : ControllerBase, IStartup
+	{
+		IServiceProvider IStartup.ConfigureServices(IServiceCollection services)
+		{
+			services
+				.AddMvcCore()
+				.AddJsonFormatters();
 
-        IServiceProvider IStartup.ConfigureServices(IServiceCollection services)
-        {
-            services.AddMvc();
+			return services.BuildServiceProvider();
+		}
 
-            return services.BuildServiceProvider();
-        }
+		void IStartup.Configure(IApplicationBuilder app)
+		{
+			app.UseMvcWithDefaultRoute();
+		}
 
-        void IStartup.Configure(IApplicationBuilder app) => app.UseMvc();
-    }
+		public static void Run<TStartup>(string[] args) where TStartup : class
+		{
+			WebHost.CreateDefaultBuilder(args)
+				.UseStartup<TStartup>()
+				.Build()
+				.Run();
+		}
+	}
 }
