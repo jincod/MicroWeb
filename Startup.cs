@@ -10,17 +10,17 @@ namespace Micro
 	public class Microservice : ControllerBase, IStartup
 	{
 		IServiceProvider IStartup.ConfigureServices(IServiceCollection services)
-		{
-			services
-				.AddMvcCore()
-				.AddJsonFormatters();
+        {
+            services.AddControllers();
 
-			return services.BuildServiceProvider();
+            return services.BuildServiceProvider();
 		}
 
 		void IStartup.Configure(IApplicationBuilder app)
 		{
-			app.UseMvcWithDefaultRoute();
+			app
+                .UseRouting()
+                .UseEndpoints(endpoints => { endpoints.MapControllers(); });
 		}
 
 		public static void Run<TStartup>(string[] args) where TStartup : class
